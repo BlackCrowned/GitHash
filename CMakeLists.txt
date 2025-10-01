@@ -10,8 +10,9 @@ cmake_minimum_required(VERSION 3.25.3)
 find_package(Git REQUIRED)
 
 # Commands to read each needed variable
-set(variablesToRead "GIT_BRANCH;GIT_SHA1;GIT_SHORTSHA1;GIT_DIRTY")
+set(variablesToRead "GIT_BRANCH;GIT_TAG;GIT_SHA1;GIT_SHORTSHA1;GIT_DIRTY")
 set(CMD_GIT_BRANCH      ${GIT_EXECUTABLE} branch --show-current)
+set(CMD_GIT_TAG         ${GIT_EXECUTABLE} describe --tags --always)
 set(CMD_GIT_SHA1        ${GIT_EXECUTABLE} log -1 --format=%H)
 set(CMD_GIT_SHORTSHA1   ${GIT_EXECUTABLE} log -1 --format=%h)
 set(CMD_GIT_DIRTY       ${GIT_EXECUTABLE} describe --always --dirty) # we post-process this one
@@ -21,10 +22,12 @@ function(genCppContents outputString)
     set(${outputString}
 "namespace GitHash {
     extern const char * const branch;
+    extern const char * const tag;
     extern const char * const sha1;
     extern const char * const shortSha1;
     extern const bool dirty;
     const char * const branch = \"${GIT_BRANCH}\";
+    const char * const tag = \"${GIT_TAG}\";
     const char * const sha1 = \"${GIT_SHA1}\";
     const char * const shortSha1 = \"${GIT_SHORTSHA1}\";
     const bool dirty = ${GIT_DIRTY};
