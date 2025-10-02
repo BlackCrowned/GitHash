@@ -38,7 +38,7 @@ endfunction()
 
 # Cache format (which, if changed, triggers a regeneration of the .cpp)
 function(genCache outputString)
-    set(${outputString} "${GIT_SHA1}-${GIT_DIRTY}" PARENT_SCOPE)
+    set(${outputString} "${GIT_SHA1}-${GIT_DIRTY}-${GIT_TAG}" PARENT_SCOPE)
 endfunction()
 
 ###################################
@@ -148,7 +148,7 @@ function(UpdateGitHash)
 
         # Finally output our new library cpp file.
         file(WRITE ${GitHash_CppFile} "${outputString}")
-        message(STATUS "Compiling branch ${GIT_BRANCH}, commit ${GIT_SHA1}, dirty is ${GIT_DIRTY}")
+        message(STATUS "Compiling branch ${GIT_BRANCH}, tag ${GIT_TAG}, commit ${GIT_SHA1}, dirty is ${GIT_DIRTY}")
     endif()
 endfunction()
 
